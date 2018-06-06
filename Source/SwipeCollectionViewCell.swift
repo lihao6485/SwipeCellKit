@@ -37,7 +37,7 @@ open class SwipeCollectionViewCell: UICollectionViewCell {
     weak var collectionView: UICollectionView?
     
     /// :nodoc:
-    open override var frame: CGRect {
+    open var swipeFrame: CGRect {
         set { super.frame = state.isActive ? CGRect(origin: CGPoint(x: frame.minX, y: newValue.minY), size: newValue.size) : newValue }
         get { return super.frame }
     }

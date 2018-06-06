@@ -86,7 +86,7 @@ public struct SwipeExpansionStyle {
         guard let actionsView = view.actionsView, let gestureView = gesture.view else { return false }
         guard abs(gesture.translation(in: gestureView).x) > 5.0 else { return false }
     
-        let xDelta = abs(usingFrame?.minX ?? view.frame.minX)
+        let xDelta = abs(usingFrame?.minX ?? view.swipeFrame.minX)
         if xDelta < actionsView.preferredWidth {
             return false
         } else if xDelta >= targetOffset(for: view) {
@@ -96,7 +96,7 @@ public struct SwipeExpansionStyle {
         // If we've been given an override frame, we need to change which frame of reference to use in
         //   the isTriggered method. This is useful when `view` is a cell, but the override frame
         //   belongs to the view's content view (when the content view is moving, but not the `view`).
-        let referenceFrame: CGRect = usingFrame != nil ? view.frame : superview.bounds
+        let referenceFrame: CGRect = usingFrame != nil ? view.swipeFrame : superview.bounds
         for trigger in additionalTriggers {
             if trigger.isTriggered(view: view, gesture: gesture, in: superview, referenceFrame: referenceFrame) {
                 return true
@@ -126,9 +126,9 @@ extension SwipeExpansionStyle {
             let offset: CGFloat = {
                 switch self {
                 case .percentage(let value):
-                    return view.frame.width * value
+                    return view.swipeFrame.width * value
                 case .edgeInset(let value):
-                    return view.frame.width - value
+                    return view.swipeFrame.width - value
                 }
             }()
             
@@ -153,7 +153,7 @@ extension SwipeExpansionStyle {
                 let locationRatio = (actionsView.orientation == .left ? location : referenceFrame.width - location) / referenceFrame.width
                 return locationRatio > value
             case .overscroll(let value):
-                return abs(view.frame.minX) > actionsView.preferredWidth + value
+                return abs(view.swipeFrame.minX) > actionsView.preferredWidth + value
             }
         }
     }

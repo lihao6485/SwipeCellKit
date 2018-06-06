@@ -99,7 +99,7 @@ class SwipeController: NSObject {
                 target.center.x = gesture.elasticTranslation(in: target,
                                                              withLimit: .zero,
                                                              fromOriginalCenter: CGPoint(x: originalCenter, y: 0)).x
-                swipeable.actionsView?.visibleWidth = abs(swipeable.frame.minX)
+                swipeable.actionsView?.visibleWidth = abs(swipeable.swipeFrame.minX)
                 scrollRatio = elasticScrollRatio
                 return
             }
@@ -192,7 +192,7 @@ class SwipeController: NSObject {
         
         var contentEdgeInsets = UIEdgeInsets.zero
         if let visibleTableViewRect = delegate?.swipeController(self, visibleRectFor: scrollView) {
-            let visibleSwipeableRect = swipeable.frame.intersection(visibleTableViewRect)
+            let visibleSwipeableRect = swipeable.swipeFrame.intersection(visibleTableViewRect)
             if visibleSwipeableRect.isNull == false {
                 let top = visibleSwipeableRect.minY > swipeable.frame.minY ? max(0, visibleSwipeableRect.minY - swipeable.frame.minY) : 0
                 let bottom = max(0, swipeable.frame.size.height - visibleSwipeableRect.size.height - top)
